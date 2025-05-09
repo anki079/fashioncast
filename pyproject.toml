@@ -11,4 +11,8 @@ dependencies = [
     "lightgbm",
     "prophet",
     "datasets",
+    "ruff",
+    "black",
+    "isort",
+    "pre-commit"
 ]
