@@ -3,7 +3,7 @@ import polars as pl
 import numpy as np
 from fashioncast.constants import DATA_ROOT
 
-INFILE = DATA_ROOT / "processed" / "img_features.parquet"
+INFILE = DATA_ROOT / "processed" / "img_features_clean.parquet"
 OUT_CO = DATA_ROOT / "processed" / "colour_trend.parquet"
 OUT_SH = DATA_ROOT / "processed" / "shape_trend.parquet"
 OUT_VEC = DATA_ROOT / "processed" / "season_clip_mean.parquet"
