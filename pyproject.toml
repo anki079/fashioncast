@@ -1,0 +1,14 @@
+[project]
+name = "fashioncast"
+version = "0.0.1"
+dependencies = [
+    "pandas>=2.0",
+    "polars",
+    "numpy",
+    "opencv-python-headless",
+    "torch",
+    "timm",
+    "lightgbm",
+    "prophet",
+    "datasets",
+]
