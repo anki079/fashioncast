@@ -1,0 +1,10 @@
+pyproject.toml
+src/fashioncast/__init__.py
+src/fashioncast/clip_labels.py
+src/fashioncast/color.py
+src/fashioncast/constants.py
+src/fashioncast.egg-info/PKG-INFO
+src/fashioncast.egg-info/SOURCES.txt
+src/fashioncast.egg-info/dependency_links.txt
+src/fashioncast.egg-info/requires.txt
+src/fashioncast.egg-info/top_level.txt

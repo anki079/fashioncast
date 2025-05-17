@@ -1,0 +1,13 @@
+pandas>=2.0
+polars
+numpy
+opencv-python-headless
+torch
+timm
+lightgbm
+prophet
+datasets
+ruff
+black
+isort
+pre-commit

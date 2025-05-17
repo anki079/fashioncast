@@ -16,3 +16,13 @@ dependencies = [
     "isort",
     "pre-commit"
 ]
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}          # root packages are inside 'src/'
+
+[tool.setuptools.packages.find]
+include = ["fashioncast", "fashioncast.*"]   # what to ship

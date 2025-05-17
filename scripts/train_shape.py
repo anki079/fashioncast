@@ -18,11 +18,32 @@ tbl = pl.read_parquet(SHAPE_TBL)
 train, val, test = proposal_split(tbl)
 
 
+# def counts_vec(col, k=6):
+#     return col.map_elements(
+#         lambda lst: [dict(lst).get(i, 0) for i in range(k)],
+#         return_dtype=pl.List(pl.UInt32),
+#     )
+
+
+# Convert a List[struct{'shape_label': int, 'counts': int}] into a fixed len python list [c0, c1,..., c5].
 def counts_vec(col, k=6):
-    return col.map_elements(
-        lambda lst: [dict(lst).get(i, 0) for i in range(k)],
-        return_dtype=pl.List(pl.UInt32),
-    )
+    def to_vec(lst):
+        vec = [0] * k
+        if lst is None:
+            return vec
+        for s in lst:
+            # pull out the two fields, with fallbacks
+            lbl_raw = s.get("shape_label", s.get("label", None))
+            cnt_raw = s.get("counts", s.get("count", None))
+            if lbl_raw is None or cnt_raw is None:
+                continue
+            lbl = int(lbl_raw)
+            cnt = int(cnt_raw)
+            if 0 <= lbl < k:
+                vec[lbl] = cnt
+        return vec
+
+    return col.map_elements(to_vec, return_dtype=pl.List(pl.UInt32))
 
 
 train = train.with_columns(counts_vec(pl.col("shape_label")).alias("counts"))
@@ -52,7 +73,7 @@ clf = lgb.LGBMClassifier(
     num_leaves=31,
 )
 
-clf.fit(X_train, y_train, eval_set=[(X_val, y_val)])  # ← verbose removed
+clf.fit(X_train, y_train, eval_set=[(X_val, y_val)])
 pred = clf.predict(X_test)
 f1 = f1_score(y_test, pred, average="macro")
 
@@ -60,7 +81,9 @@ all_labels = list(range(6))  # 0-5 even if absent
 f1_all = f1_score(y_test, pred, average="macro", labels=all_labels, zero_division=0)
 acc = accuracy_score(y_test, pred)
 
-# ----- save & report ----------------------------------------------
+np.save(OUT_DIR / "y_test.npy", np.array(y_test))
+np.save(OUT_DIR / "y_pred.npy", np.array(pred))
+
 pickle.dump(clf, open(OUT_DIR / "lgb_shape.pkl", "wb"))
 json.dump(
     dict(
