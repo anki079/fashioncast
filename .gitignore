@@ -1,8 +1,5 @@
 data/raw/*
 data/cache/*
 data/processed/*
-notebooks/*data/
-
-data/
-
-otebooks/*
+data/*
+notebooks/*
